@@ -1,0 +1,20 @@
+{
+  "name": "back-end-mrd",
+  "version": "1.0.0",
+  "description": "Back-end da Aplicaçao do Software da Empresa MRD Advogados",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Davi Gomes",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.7.10"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^1.19.4"
+  }
+}
