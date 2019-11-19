@@ -1,61 +1,56 @@
-const Cliente = require('../model/cliente');
+const Tribunal = require('../model/tribunal');
 
 exports.listAll = async (req, res) => {
-    await Cliente.find({}, "-__v")
+    await Tribunal.find({}, "-__v")
         .then((result) => {
             res.send(result);
         }).catch((err) => {
             res.status(500).send({
-                message: 'Falha ao carregar os clientes.',
-                error: e
+                message: 'Falha ao carregar os tribunais.',
+                error: err
             });
         });
 };
 
 exports.create = async (req, res) => {
-    const cliente = new Cliente({
-        nome: req.body.nome,
+    const tribunal = new Tribunal({
+        nome:req.body.nome,
         endereco: {
             rua: req.body.endereco.rua,
             numero: req.body.endereco.numero,
             bairro: req.body.endereco.bairro,
             cidade: req.body.endereco.cidade
-        },
-        email: req.body.email,
-        usuario: req.body.usuario,
-        senha: req.body.senha,
-        cpf: req.body.cpf,
-        cnpj: req.body.cnpj,
+        }
     });
-    await cliente.save()
+    await tribunal.save()
         .then((result) => {
             res.status(201).send({
-                message: 'Cliente cadastrado com sucesso!'
+                message: 'Tribunal cadastrado com sucesso!'
             });
         }).catch((err) => {
             res.status(500).send({
-                error: 'Falha cadastrado cliente!' + err.message
+                error: 'Falha cadastrado Tribunal!' + err.message
             });
         });
 };
 
 exports.findOne = async (req, res) => {
-    const id = req.body.cliente_id;
-    await Cliente.findById(
+    const id = req.body.tribunal_id;
+    await Tribunal.findById(
         {
             _id: id
         }
     ).then((result) => {
         if (!result) {
             return res.status(404).send({
-                error: "Cliente não encontrado: id " + req.params.cliente_id
+                error: "Tribunal não encontrado: id " + req.params.tribunal_id
             });
         }
         res.send({ result });
     }).catch((err) => {
         if (err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
-                error: "Cliente não encontrado: id " + req.params.cliente_id
+                error: "Tribunal não encontrado: id " + req.params.tribunal_id
             });
         }
         res.status(500).send(err);
@@ -63,25 +58,25 @@ exports.findOne = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-    const id = req.params.cliente_id;
-    await Cliente.deleteOne(
+    const id = req.params.tribunal_id;
+    await Tribunal.deleteOne(
         {
             _id: id
         }
     ).then((result) => {
         if (!result) {
             res.status(404).send({
-                error: "Cliente não encontrado: id " + req.params.cliente_id
+                error: "Tribunal não encontrado: id " + req.params.tribunal_id
             });
         }
         res.send({
-            message: "Cliente removido com sucesso",
+            message: "Tribunal removido com sucesso",
             res: result
         });
     }).catch((err) => {
         if (err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
-                error: "Cliente não encontrado: id " + req.params.cliente_id
+                error: "Tribunal não encontrado: id " + req.params.tribunal_id
             });
         }
         res.status(500).send(err.message);
@@ -89,40 +84,35 @@ exports.delete = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-    const id = req.params.cliente_id;
-    await Cliente.findOneAndUpdate(
+    const id = req.params.tribunal_id;
+    await Tribunal.findOneAndUpdate(
         {
             _id: id
         },
         {
-            nome: req.body.nome,
+            nome:req.body.nome,
             endereco: {
                 rua: req.body.endereco.rua,
                 numero: req.body.endereco.numero,
                 bairro: req.body.endereco.bairro,
                 cidade: req.body.endereco.cidade
-            },
-            email: req.body.email,
-            usuario: req.body.usuario,
-            senha: req.body.senha,
-            cpf: req.body.cpf,
-            cnpj: req.body.cnpj,
+            }
         },
         { new: true }
     ).then((result) => {
         if (!result) {
             return res.status(404).send({
-                error: "Cliente não encontrado: id " + req.params.cliente_id
+                error: "Tribunal não encontrado: id " + req.params.tribunal_id
             });
         }
         res.send({
-            message: "Cliente atualizado com sucesso",
+            message: "Tribunal atualizado com sucesso",
             res: result
         });
     }).catch((err) => {
         if (err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
-                error: "Cliente não encontrado : id" + req.params.cliente_id
+                error: "Tribunal não encontrado : id" + req.params.tribunal_id
             });
         }
         res.status(500).send(err.message);

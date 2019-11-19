@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const audienciaSchema = new Schema(
     {
-        data: Date,
+        data:{ type: Date, default: Date.now },
         recomendacao: String,
     }
 );
