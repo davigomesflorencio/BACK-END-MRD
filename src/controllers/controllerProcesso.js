@@ -36,7 +36,7 @@ exports.create = async (req, res) => {
 };
 
 exports.findOne = async (req, res) => {
-    const id = req.body.processo_id;
+    const id = req.params.processo_id;
     await Processo.findById(
         {
             _id: id

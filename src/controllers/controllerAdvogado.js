@@ -48,7 +48,7 @@ exports.findOne = async (req, res) => {
     await Advogado.findById(
         {
             _id: id
-        }
+        },"-__v"
     ).then((result) => {
         if (!result) {
             return res.status(404).send({

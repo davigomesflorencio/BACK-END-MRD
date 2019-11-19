@@ -40,7 +40,7 @@ exports.create = async (req, res) => {
 };
 
 exports.findOne = async (req, res) => {
-    const id = req.body.cliente_id;
+    const id = req.params.cliente_id;
     await Cliente.findById(
         {
             _id: id

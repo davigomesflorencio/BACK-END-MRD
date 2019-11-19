@@ -35,7 +35,7 @@ exports.create = async (req, res) => {
 };
 
 exports.findOne = async (req, res) => {
-    const id = req.body.tribunal_id;
+    const id = req.params.tribunal_id;
     await Tribunal.findById(
         {
             _id: id

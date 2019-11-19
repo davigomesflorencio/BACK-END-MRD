@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const varaSchema = new Schema(
     {
         numero: Number,
-        idTribunal: Number
+        idTribunal: String
     }
 );
 module.exports = mongoose.model("Vara", varaSchema);

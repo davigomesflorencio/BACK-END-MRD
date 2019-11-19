@@ -30,7 +30,7 @@ exports.create = async (req, res) => {
 };
 
 exports.findOne = async (req, res) => {
-    const id = req.body.audiencia_id;
+    const id = req.params.audiencia_id;
     await Audiencia.findById(
         {
             _id: id

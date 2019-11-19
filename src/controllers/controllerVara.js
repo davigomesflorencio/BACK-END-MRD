@@ -30,7 +30,8 @@ exports.create = async (req, res) => {
 };
 
 exports.findOne = async (req, res) => {
-    const id = req.body.vara_id;
+    const id = req.params.vara_id;
+    console.log(id);
     await Vara.findById(
         {
             _id: id
