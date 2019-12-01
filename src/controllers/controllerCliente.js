@@ -3,6 +3,7 @@ const Cliente = require('../model/cliente');
 exports.listAll = async (req, res) => {
     await Cliente.find({}, "-__v")
         .then((result) => {
+            console.log(result);
             res.send(result);
         }).catch((err) => {
             res.status(500).send({
@@ -128,3 +129,4 @@ exports.update = async (req, res) => {
         res.status(500).send(err.message);
     });
 };  
+

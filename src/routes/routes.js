@@ -66,6 +66,9 @@ router.route('/processo')
     .get(ctlProcesso.listAll)
     .post(ctlProcesso.create);
 
+    router.route('/processo/:processo_ids')
+    .get(ctlProcesso.generatePdf);
+
 router.route('/processo/:processo_id')
     .get(ctlProcesso.findOne)
     .put(ctlProcesso.update)

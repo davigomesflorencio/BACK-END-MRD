@@ -1,4 +1,8 @@
 const Processo = require('../model/processo');
+const cliente = require('../model/cliente');
+const audiencia = require('../model/audiencia');
+var fs = require('fs');
+var pdf = require('dynamic-html-pdf');
 
 exports.listAll = async (req, res) => {
     await Processo.find({}, "-__v")
@@ -119,4 +123,32 @@ exports.update = async (req, res) => {
         }
         res.status(500).send(err.message);
     });
-};  
+};
+
+exports.generatePdf = async (req, res) => {
+    if(req.body.hasOwnProperty('processes')){
+        const processes = req.body.processes;
+        const filename = (Date.now()).toString();
+        var html = fs.readFileSync(__dirname + '/../utils/template.html', 'utf8');
+        var options = {
+            format: "A4",
+            orientation: "portrait",
+            border: "10mm"
+        };
+        var document = {
+            type: 'file',
+            template: html,
+            context: {
+                processes: processes
+            },
+            path:  filename
+        };
+        pdf.create(document, options);
+        fs.readFile('./output.pdf', function (err, data) {
+            res.contentType("application/pdf");
+            res.send(data);
+        });
+    }else{
+        res.status(500).send({error: "Nenhum processo informado"});
+    }
+};

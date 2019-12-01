@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    {{#each processes}}
+    <h1>Processo: {{this.id}}</h1>
+        <div>
+            <h3>Cliente</h3>
+            <p>{{this.cliente}}</p>
+            <h3>Parte contraria</h3>
+            <p>{{this.parteContraria}}</p>
+            <h3>Data da audiência</h3>
+            <p>{{this.dataAudiencia}}</p>
+            <h3>Descrição</h3>
+            <p>{{this.descricao}}</p>
+            <h3>Advogado</h3>
+            <p>{{this.advogado}}</p>
+            <h3>Juiz</h3>
+            <p>{{this.juiz}}</p>
+            <h3>Sentenca</h3>
+            <p>{{this.sentenca}}</p>
+            <h3>Adicional</h3>
+            <p>{{this.adicional}}</p>
+            <br/>
+        </div>
+    {{/each}}
+</body>
+</html>
