@@ -11,6 +11,10 @@ router.route('/advogado')
     .get(ctlAdvogado.listAll)
     .post(ctlAdvogado.create);
 
+
+router.route('/advogado/autenticar')
+    .get(ctlAdvogado.authenticate);
+
 router.route('/advogado/:advogado_id')
     .get(ctlAdvogado.findOne)
     .put(ctlAdvogado.update)

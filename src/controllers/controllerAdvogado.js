@@ -1,7 +1,8 @@
+const bcrypt = require('bcrypt');
 const Advogado = require("../model/advogado");
 
 exports.listAll = async (req, res) => {
-    await Advogado.find({}, "-__v")
+    await Advogado.find({}, "-__v -senha")
         .then((result) => {
             res.send(result);
         }).catch((err) => {
@@ -10,37 +11,41 @@ exports.listAll = async (req, res) => {
                 error: err
             });
         });
-};
+}
 
 exports.create = async (req, res) => {
-
-    const advogado = new Advogado({
-        nome: req.body.nome,
-        endereco: {
-            rua: req.body.endereco.rua,
-            num: req.body.endereco.num,
-            bairro: req.body.endereco.bairro,
-            cidade: req.body.endereco.cidade
-        },
-        email: req.body.email,
-        usuario: req.body.usuario,
-        senha: req.body.senha,
-        oab: req.body.oab,
-        cpf: req.body.cpf
-    });
-    await advogado.save()
-        .then((result) => {
-            res.status(201).send({
-                message: 'Advogado cadastrado com sucesso!'
-            });
-        }).catch((err) => {
-            res.status(500).send({
-                error: 'Falha cadastrado advogado!' + err.message
-            });
+    if (await Advogado.findOne({ usuario: req.body.usuario })) {
+        res.status(500).send({
+            error: 'Nome de usuario já utilizado!'
         });
-
-
-
+    } else {
+        const saltRounds = 10;
+        
+        const advogado = new Advogado({
+            nome: req.body.nome,
+            endereco: {
+                rua: req.body.endereco.rua,
+                num: req.body.endereco.num,
+                bairro: req.body.endereco.bairro,
+                cidade: req.body.endereco.cidade
+            },
+            email: req.body.email,
+            usuario: req.body.usuario,
+            senha: await bcrypt.hashSync(req.body.senha,saltRounds),
+            oab: req.body.oab,
+            cpf: req.body.cpf
+        });
+        await advogado.save()
+            .then((result) => {
+                res.status(201).send({
+                    message: 'Advogado cadastrado com sucesso!'
+                });
+            }).catch((err) => {
+                res.status(500).send({
+                    error: 'Falha cadastrado advogado!'
+                });
+            });
+    }
 };
 
 exports.findOne = async (req, res) => {
@@ -48,7 +53,7 @@ exports.findOne = async (req, res) => {
     await Advogado.findById(
         {
             _id: id
-        },"-__v"
+        }, "-__v -senha"
     ).then((result) => {
         if (!result) {
             return res.status(404).send({
@@ -132,3 +137,16 @@ exports.update = async (req, res) => {
         res.status(500).send(err.message);
     });
 };
+
+exports.authenticate = async (req,res)=>{
+    const advogado = await Advogado.findOne({ usuario: req.body.usuario });
+    if (advogado && bcrypt.compareSync(req.body.senha, advogado.senha)) {
+        res.send({
+            message: "Advogado autenticado com sucesso"
+        });
+    }else{
+        res.send({
+            message: "Falha autenticação"
+        });
+    }  
+}
